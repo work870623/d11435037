@@ -1,0 +1,2421 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>會計學基礎課程</title>
+  <style>
+    :root {
+      --ink: #1f2933;
+      --muted: #667085;
+      --line: #d7dee8;
+      --paper: #fbfcfe;
+      --panel: #ffffff;
+      --blue: #2563eb;
+      --green: #0f766e;
+      --amber: #b45309;
+      --rose: #be123c;
+      --shadow: 0 16px 40px rgba(31, 41, 51, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Microsoft JhengHei", "PingFang TC", Arial, sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(135deg, rgba(37, 99, 235, 0.08), transparent 34%),
+        linear-gradient(225deg, rgba(15, 118, 110, 0.08), transparent 38%),
+        var(--paper);
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 24px clamp(18px, 4vw, 56px) 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid rgba(215, 222, 232, 0.8);
+      background: rgba(251, 252, 254, 0.9);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: linear-gradient(145deg, var(--blue), var(--green));
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.25);
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      letter-spacing: 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    nav a {
+      color: var(--ink);
+      text-decoration: none;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      border: 1px solid transparent;
+    }
+
+    nav a:hover {
+      border-color: var(--line);
+      background: #fff;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+      gap: 28px;
+      align-items: stretch;
+      min-height: 430px;
+    }
+
+    .hero-copy {
+      padding: clamp(20px, 4vw, 42px) 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 22px;
+    }
+
+    .eyebrow {
+      color: var(--green);
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .hero h2 {
+      font-size: clamp(2.2rem, 7vw, 5.2rem);
+      line-height: 1;
+      letter-spacing: 0;
+      max-width: 760px;
+    }
+
+    .hero p, .section-head p, .card p, li, .result {
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.18rem);
+      max-width: 700px;
+    }
+
+    .hero-actions, .quiz-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button, .button {
+      border: 0;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 8px;
+      padding: 11px 15px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      min-height: 44px;
+    }
+
+    button.secondary, .button.secondary {
+      color: var(--ink);
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    button:hover, .button:hover { transform: translateY(-1px); }
+
+    .ledger-visual {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-self: center;
+    }
+
+    .sheet-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--ink);
+      font-weight: 800;
+    }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 1fr 90px 90px;
+      gap: 8px;
+      align-items: center;
+      min-height: 38px;
+      border-bottom: 1px solid #eef2f7;
+      font-size: 0.95rem;
+    }
+
+    .entry span:nth-child(2), .entry span:nth-child(3) {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .total {
+      background: #eef6ff;
+      border-radius: 6px;
+      border-bottom: 0;
+      padding: 0 8px;
+      font-weight: 800;
+    }
+
+    section {
+      margin-top: 42px;
+      scroll-margin-top: 100px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 16px;
+    }
+
+    .section-head p { max-width: 680px; }
+
+    h2 {
+      font-size: clamp(1.6rem, 3vw, 2.25rem);
+      letter-spacing: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card, .tool {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .card {
+      padding: 18px;
+      min-height: 198px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card h3 { font-size: 1.12rem; }
+
+    .chapter-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .chapter-panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: clamp(18px, 3vw, 26px);
+      display: grid;
+      grid-template-columns: 96px 1fr auto;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .chapter-number {
+      width: 76px;
+      height: 76px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: #eef6ff;
+      color: var(--blue);
+      font-size: 1.45rem;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .chapter-content {
+      display: grid;
+      gap: 10px;
+    }
+
+    .chapter-content h3 {
+      font-size: clamp(1.2rem, 2.2vw, 1.55rem);
+    }
+
+    .chapter-focus {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0;
+      margin: 4px 0 0;
+      list-style: none;
+    }
+
+    .chapter-focus li {
+      color: var(--ink);
+      background: #f3f7fb;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 10px;
+      line-height: 1.5;
+      font-size: 0.9rem;
+    }
+
+    .chapter-detail {
+      display: grid;
+      gap: 16px;
+    }
+
+    .learning-path {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .path-item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 14px;
+      min-height: 150px;
+    }
+
+    .path-item strong {
+      display: block;
+      margin: 8px 0 6px;
+    }
+
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .concept-block {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 16px;
+    }
+
+    .concept-block h3 {
+      margin-bottom: 10px;
+    }
+
+    .concept-block ul,
+    .example-box ol {
+      padding-left: 1.2rem;
+      margin: 10px 0 0;
+    }
+
+    .formula-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .formula-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: #f8fafc;
+    }
+
+    .formula-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--green);
+    }
+
+    .example-box {
+      border-left: 4px solid var(--blue);
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .practice-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .practice-item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .tag {
+      width: fit-content;
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #fff;
+      background: var(--green);
+    }
+
+    .tag.blue { background: var(--blue); }
+    .tag.amber { background: var(--amber); }
+    .tag.rose { background: var(--rose); }
+
+    .tool {
+      box-shadow: var(--shadow);
+      padding: clamp(16px, 3vw, 24px);
+    }
+
+    .spec-layout, .deep-layout {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .spec-list, .steps, .term-buttons, .choice-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .spec-list, .steps { margin-top: 16px; }
+
+    .spec-item {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .spec-item strong { color: var(--green); }
+
+    .step {
+      position: relative;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f8fafc;
+      min-height: 76px;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .equation {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    label {
+      display: block;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 11px 12px;
+      font: inherit;
+      background: #fff;
+      min-height: 44px;
+    }
+
+    .result {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 8px;
+      background: #f3f7fb;
+      border: 1px solid var(--line);
+      min-height: 54px;
+    }
+
+    .rule-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      overflow: hidden;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    .rule-table th, .rule-table td {
+      border: 1px solid var(--line);
+      padding: 11px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .rule-table th {
+      background: #eef6ff;
+      color: var(--ink);
+    }
+
+    .quiz-layout, .terms {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .choice {
+      text-align: left;
+      background: #fff;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      width: 100%;
+    }
+
+    .choice.correct {
+      border-color: var(--green);
+      background: #ecfdf5;
+    }
+
+    .choice.wrong {
+      border-color: var(--rose);
+      background: #fff1f2;
+    }
+
+    .term-buttons button {
+      background: #fff;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      text-align: left;
+    }
+
+    .term-buttons button.active {
+      background: #eef6ff;
+      border-color: var(--blue);
+    }
+
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .filter-bar button {
+      background: #fff;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      min-height: 40px;
+      padding: 8px 12px;
+    }
+
+    .filter-bar button.active {
+      color: #fff;
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .flashcard-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .flashcard {
+      min-height: 154px;
+      perspective: 900px;
+    }
+
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      min-height: 154px;
+      transition: transform 0.35s ease;
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+
+    .flashcard.flipped .flashcard-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flashcard-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 15px;
+      box-shadow: 0 10px 24px rgba(31, 41, 51, 0.08);
+    }
+
+    .flashcard-back {
+      transform: rotateY(180deg);
+      background: #f8fafc;
+    }
+
+    .flashcard-title {
+      font-size: 1.12rem;
+      font-weight: 900;
+    }
+
+    .flashcard-meta {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: #e7edf5;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      transition: width 0.25s ease;
+    }
+
+    footer {
+      color: var(--muted);
+      text-align: center;
+      padding: 28px 16px 38px;
+      border-top: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.65);
+      line-height: 1.7;
+    }
+
+    footer a { color: var(--blue); }
+
+    @media (max-width: 850px) {
+      header, .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      nav { justify-content: flex-start; }
+
+      .hero, .quiz-layout, .terms, .spec-layout, .deep-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .grid, .equation, .flashcard-grid, .learning-path, .concept-grid, .formula-strip { grid-template-columns: 1fr; }
+
+      .chapter-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .chapter-number {
+        width: 64px;
+        height: 64px;
+      }
+
+      .ledger-visual { width: 100%; }
+    }
+
+    @media (max-width: 480px) {
+      main { width: min(100% - 22px, 1180px); }
+      nav a { padding: 8px 9px; }
+      .entry {
+        grid-template-columns: 1fr 66px 66px;
+        font-size: 0.86rem;
+      }
+      .spec-item { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">A+</div>
+      <div>
+        <h1>會計學基礎課程</h1>
+        <p class="eyebrow">從交易判斷到借貸分錄</p>
+      </div>
+    </div>
+    <nav aria-label="主要導覽">
+      <a href="#overview">課程架構</a>
+      <a href="#lessons">章節課程</a>
+      <a href="#chapter1">第一章詳解</a>
+      <a href="#chapter2">第二章詳解</a>
+      <a href="#chapter3">第三章詳解</a>
+      <a href="#chapter4">第四章詳解</a>
+      <a href="#deep">進階整理</a>
+      <a href="#equation">恆等式</a>
+      <a href="#quiz">觀念測驗</a>
+      <a href="#flashcards">科目字卡</a>
+      <a href="#terms">名詞庫</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="課程首頁">
+      <div class="hero-copy">
+        <p class="eyebrow">依五南試閱章節改寫與深化</p>
+        <h2>把會計從記憶題，變成能判斷交易的工具。</h2>
+        <p>本頁將會計目的、會計五大要素、科目層級、借貸法則與常見觀念題整合成課程化內容。學習順序從「為誰提供資訊」開始，再進入交易、科目、恆等式與分錄判斷。</p>
+        <div class="hero-actions">
+          <a class="button" href="#lessons">開始學習</a>
+          <a class="button secondary" href="#deep">看進階整理</a>
+          <a class="button secondary" href="#quiz">練習題目</a>
+        </div>
+      </div>
+
+      <div class="ledger-visual" aria-label="日記帳範例">
+        <div class="sheet-title">
+          <span>日記帳範例</span>
+          <span>2026/05</span>
+        </div>
+        <div class="entry"><strong>科目</strong><strong>借方</strong><strong>貸方</strong></div>
+        <div class="entry"><span>現金</span><span>50,000</span><span></span></div>
+        <div class="entry"><span>業主資本</span><span></span><span>50,000</span></div>
+        <div class="entry"><span>文具用品</span><span>8,000</span><span></span></div>
+        <div class="entry"><span>現金</span><span></span><span>8,000</span></div>
+        <div class="entry total"><span>合計</span><span>58,000</span><span>58,000</span></div>
+        <p>借方與貸方不代表「借錢」與「貸款」，而是帳戶左右兩邊的記錄方向。</p>
+        <div class="progress-bar" aria-label="學習進度">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="overview">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">課程架構</p>
+          <h2>先看全貌，再進入分錄</h2>
+        </div>
+        <p>會計是財務資訊系統：把經濟活動以貨幣衡量，經由紀錄、分類、彙總、編表、分析與傳遞，提供內部與外部使用者做決策。</p>
+      </div>
+      <div class="spec-layout">
+        <div class="tool">
+          <h3>學習路線</h3>
+          <div class="spec-list">
+            <div class="spec-item">
+              <strong>目的</strong>
+              <p>理解會計資訊服務誰：管理階層、股東、投資人、債權人、員工、政府與社會大眾。</p>
+            </div>
+            <div class="spec-item">
+              <strong>交易</strong>
+              <p>辨認交易者、交易標的與金額，判斷資產、負債或權益是否發生變化。</p>
+            </div>
+            <div class="spec-item">
+              <strong>科目</strong>
+              <p>把交易放入會計科目，再依五大要素與層級分類，讓財務報表更清楚。</p>
+            </div>
+            <div class="spec-item">
+              <strong>借貸</strong>
+              <p>用恆等式與 T 字帳判斷借方、貸方，建立正常餘額的直覺。</p>
+            </div>
+          </div>
+        </div>
+        <div class="tool">
+          <h3>會計資訊使用者</h3>
+          <div class="steps">
+            <div class="step">
+              <strong>內部使用者</strong>
+              <p>管理階層用來規劃、控制、評估績效；董事與監察人也可作為監督依據。</p>
+            </div>
+            <div class="step">
+              <strong>外部使用者</strong>
+              <p>投資人評估投資，債權人衡量授信，政府辦理徵信與稅務，員工與大眾也能依資訊判斷企業狀況。</p>
+            </div>
+            <div class="step">
+              <strong>不同會計功能</strong>
+              <p>財務會計服務外部決策；管理會計與成本會計偏向內部規劃；稅務會計依稅法調整；審計提高報表可信度。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="lessons">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">章節課程</p>
+          <h2>依四個詳解單元安排課程</h2>
+        </div>
+        <p>章節課程改為四個單元，對應下方已完成的第一章到第四章詳解。建議零基礎學員依序學習，先建立會計概念，再進入報表、分錄、試算、調整與結帳。</p>
+      </div>
+      <div class="chapter-stack" aria-label="四章課程總覽">
+        <article class="chapter-panel">
+          <div class="chapter-number">01</div>
+          <div class="chapter-content">
+            <span class="tag blue">單元一</span>
+            <h3>第一章 會計基本概念</h3>
+            <p>建立會計目的、交易事項、會計五大要素、會計科目、會計恆等式與借貸法則的基礎觀念。這一章是後續分錄、試算與編表的地基。</p>
+            <ul class="chapter-focus">
+              <li>會計資訊使用者</li>
+              <li>交易判斷</li>
+              <li>資產 = 負債 + 權益</li>
+              <li>借貸方向</li>
+            </ul>
+          </div>
+          <a class="button secondary" href="#chapter1">閱讀詳解</a>
+        </article>
+        <article class="chapter-panel">
+          <div class="chapter-number">02</div>
+          <div class="chapter-content">
+            <span class="tag">單元二</span>
+            <h3>第二章 會計理論與主要財務報表</h3>
+            <p>理解會計假設、認列、衡量與表達觀念，並認識主要財務報表如何呈現企業的財務狀況、經營成果與現金流量。</p>
+            <ul class="chapter-focus">
+              <li>會計假設</li>
+              <li>認列與衡量</li>
+              <li>資產負債表</li>
+              <li>損益表</li>
+            </ul>
+          </div>
+          <a class="button secondary" href="#chapter2">閱讀詳解</a>
+        </article>
+        <article class="chapter-panel">
+          <div class="chapter-number">03</div>
+          <div class="chapter-content">
+            <span class="tag amber">單元三</span>
+            <h3>第三章 會計處理六大程序（上）</h3>
+            <p>從交易分析開始，練習分錄、日記帳與過帳，掌握會計循環前半段如何把原始交易轉成可彙總的帳簿資料。</p>
+            <ul class="chapter-focus">
+              <li>交易分析</li>
+              <li>分錄</li>
+              <li>日記帳</li>
+              <li>過帳</li>
+            </ul>
+          </div>
+          <a class="button secondary" href="#chapter3">閱讀詳解</a>
+        </article>
+        <article class="chapter-panel">
+          <div class="chapter-number">04</div>
+          <div class="chapter-content">
+            <span class="tag rose">單元四</span>
+            <h3>第四章 會計處理六大程序（下）</h3>
+            <p>延伸到試算、調整、結帳與編表，學會期末如何檢查帳務、修正期間歸屬，並把帳簿資料轉成正式財務報表。</p>
+            <ul class="chapter-focus">
+              <li>試算</li>
+              <li>調整分錄</li>
+              <li>結帳</li>
+              <li>編製報表</li>
+            </ul>
+          </div>
+          <a class="button secondary" href="#chapter4">閱讀詳解</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="chapter1">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">第一章詳解</p>
+          <h2>會計基本概念：從零開始讀懂一筆交易</h2>
+        </div>
+        <p>這一章不是要你立刻背很多分錄，而是先建立一套看事情的方法：企業發生了什麼事？這件事影響哪一類科目？資產、負債與權益是否仍然平衡？借方與貸方要放在哪裡？</p>
+      </div>
+
+      <div class="chapter-detail">
+        <div class="tool">
+          <h3>零基礎學習路線</h3>
+          <p class="result">如果你完全沒有會計基礎，建議照下面四步走。先不用急著算很快，重點是每一步都能說出「為什麼」。</p>
+          <div class="learning-path">
+            <div class="path-item">
+              <span class="tag blue">Step 1</span>
+              <strong>先看企業發生什麼事</strong>
+              <p>例如：老闆投入現金、購買設備、賒購商品、收到服務收入。會計只處理會影響企業財務狀況的事件。</p>
+            </div>
+            <div class="path-item">
+              <span class="tag">Step 2</span>
+              <strong>找出受影響的科目</strong>
+              <p>把生活語言翻成會計語言。錢變多是現金增加；欠供應商錢是應付帳款增加；老闆投入是業主資本增加。</p>
+            </div>
+            <div class="path-item">
+              <span class="tag amber">Step 3</span>
+              <strong>判斷科目類別</strong>
+              <p>每個科目都屬於資產、負債、業主權益、收益或費損。類別判斷對了，借貸方向才會穩。</p>
+            </div>
+            <div class="path-item">
+              <span class="tag rose">Step 4</span>
+              <strong>套用借貸法則</strong>
+              <p>資產與費損增加記借方；負債、權益與收益增加記貸方。最後檢查借方金額是否等於貸方金額。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-grid">
+          <div class="concept-block">
+            <h3>一、會計到底在做什麼？</h3>
+            <p>會計可以想成企業的「財務翻譯系統」。企業每天會發生很多事情，但不是每件事都能直接放進帳上。會計會挑出可以用金額衡量、會影響企業財務狀況的事件，按照固定規則記錄，再整理成報表。</p>
+            <ul>
+              <li>記錄：把交易寫成分錄與帳簿資料。</li>
+              <li>分類：把資料放進正確會計科目。</li>
+              <li>彙總：把大量交易整理成總數。</li>
+              <li>報導：透過財務報表提供決策資訊。</li>
+            </ul>
+          </div>
+
+          <div class="concept-block">
+            <h3>二、哪些事情算會計交易？</h3>
+            <p>會計交易不一定要有現金收付，只要它會使企業的資產、負債或權益發生變化，就可能需要入帳。例如賒購商品沒有立刻付錢，但企業多了商品，也多了應付帳款，所以仍然是交易。</p>
+            <ul>
+              <li>現金交易：收到收入、支付費用、購買設備。</li>
+              <li>信用交易：賒銷、賒購、產生應收或應付款。</li>
+              <li>權益交易：業主投入資本或提取現金。</li>
+              <li>調整事項：尚未收付現金，但收入或費用已經發生。</li>
+            </ul>
+          </div>
+
+          <div class="concept-block">
+            <h3>三、五大要素怎麼分？</h3>
+            <p>五大要素是會計判斷的骨架。資產、負債與業主權益是在看某一天企業有多少資源、欠多少、屬於業主多少；收益與費損是在看一段期間企業賺了多少、花了多少。</p>
+            <ul>
+              <li>資產：企業擁有或控制，未來能帶來效益的資源。</li>
+              <li>負債：企業現在有義務，未來需要償還或提供服務。</li>
+              <li>業主權益：資產扣除負債後，屬於業主的剩餘權利。</li>
+              <li>收益：提供商品或服務後，使權益增加的項目。</li>
+              <li>費損：為了賺取收益而耗用資源，使權益減少的項目。</li>
+            </ul>
+          </div>
+
+          <div class="concept-block">
+            <h3>四、借方與貸方不是借錢與貸款</h3>
+            <p>初學者最常誤會「借、貸」兩字。會計上的借方只是左邊，貸方只是右邊。它們本身不代表好壞，也不代表現金增加或減少；真正的意思要搭配科目類別判斷。</p>
+            <ul>
+              <li>資產增加：借方；資產減少：貸方。</li>
+              <li>負債增加：貸方；負債減少：借方。</li>
+              <li>權益增加：貸方；權益減少：借方。</li>
+              <li>收益增加：貸方；費損增加：借方。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tool">
+          <h3>會計恆等式：所有分錄都要回到平衡</h3>
+          <p>第一章最重要的一句話是：資產 = 負債 + 業主權益。左邊代表企業擁有或控制的資源，右邊代表這些資源的來源：不是向外部債權人借來，就是業主投入或經營累積而來。</p>
+          <div class="formula-strip">
+            <div class="formula-card">
+              <strong>資產</strong>
+              <p>企業手上能使用的經濟資源，例如現金、應收帳款、存貨、設備。</p>
+            </div>
+            <div class="formula-card">
+              <strong>負債</strong>
+              <p>企業需要償還或履行的義務，例如應付帳款、短期借款、預收收入。</p>
+            </div>
+            <div class="formula-card">
+              <strong>業主權益</strong>
+              <p>業主對企業資產的剩餘請求權，會因投資、提取、收入與費用而變動。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="example-box">
+          <h3>生活例子：開一間小店如何入門判斷？</h3>
+          <p>假設小明投入現金 50,000 元開店，接著用現金 8,000 元購買文具用品。零基礎學員可以這樣拆：</p>
+          <ol>
+            <li>小明投入現金：企業現金增加，是資產增加；業主資本增加，是權益增加。</li>
+            <li>資產增加記借方，所以借記現金 50,000；權益增加記貸方，所以貸記業主資本 50,000。</li>
+            <li>買文具用品：文具用品增加，現金減少；若文具可供後續使用，可先視為資產或用品類科目。</li>
+            <li>用品增加記借方，現金減少記貸方，所以借記文具用品 8,000；貸記現金 8,000。</li>
+          </ol>
+        </div>
+
+        <div class="tool">
+          <h3>第一章常見誤解</h3>
+          <div class="practice-list">
+            <div class="practice-item">
+              <strong>誤解一：有收錢才算收入。</strong>
+              <p>不一定。若服務已完成，即使尚未收到現金，也可能已經產生收入與應收款。</p>
+            </div>
+            <div class="practice-item">
+              <strong>誤解二：借方一定代表增加。</strong>
+              <p>不一定。借方對資產與費損通常是增加，但對負債、權益與收益通常是減少。</p>
+            </div>
+            <div class="practice-item">
+              <strong>誤解三：支出都立刻列費用。</strong>
+              <p>不一定。若支出能帶來長期效益，例如購買設備，通常先列資產，再逐期轉成費用。</p>
+            </div>
+            <div class="practice-item">
+              <strong>誤解四：會計只是在算錢。</strong>
+              <p>會計更重要的是分類與判斷。相同金額放錯科目，報表解讀就會完全不同。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool">
+          <h3>學完第一章，你應該能做到</h3>
+          <div class="practice-list">
+            <div class="practice-item">看到一筆交易，能先判斷它是否需要入帳。</div>
+            <div class="practice-item">能把生活語言轉成會計科目，例如「客戶還沒付款」對應應收帳款。</div>
+            <div class="practice-item">能說出資產、負債、權益、收益、費損的差異。</div>
+            <div class="practice-item">能用會計恆等式檢查交易後是否仍然平衡。</div>
+            <div class="practice-item">能判斷基本分錄中的借方與貸方方向。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="chapter2">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">第二章詳解</p>
+          <h2>會計理論與主要財務報表：把帳變成看得懂的資訊</h2>
+        </div>
+        <p>第二章的任務，是讓零基礎學員知道會計為什麼要有規則。會計理論不是為了增加難度，而是讓不同企業、不同期間的報表能被比較、被信任，也能協助使用者做判斷。</p>
+      </div>
+
+      <div class="chapter-detail">
+        <div class="tool">
+          <h3>第二章學習路線</h3>
+          <p class="result">學第二章時，請把重點放在三個問題：這筆交易要不要入帳？應該用多少金額入帳？最後會出現在哪一張財務報表？</p>
+          <div class="learning-path">
+            <div class="path-item">
+              <span class="tag blue">Step 1</span>
+              <strong>先理解會計假設</strong>
+              <p>會計先假定企業是一個獨立個體、會持續經營，並用固定期間與貨幣單位來衡量，才有辦法編製報表。</p>
+            </div>
+            <div class="path-item">
+              <span class="tag">Step 2</span>
+              <strong>再理解認列與衡量</strong>
+              <p>認列是在問「何時入帳」；衡量是在問「用多少金額入帳」。收入、費用、資產與負債都離不開這兩件事。</p>
+            </div>
+            <div class="path-item">
+              <span class="tag amber">Step 3</span>
+              <strong>看懂四張主要報表</strong>
+              <p>資產負債表看某一天的財務狀況；損益表看一段期間的經營成果；權益變動表與現金流量表補足變動原因。</p>
+            </div>
+            <div class="path-item">
+              <span class="tag rose">Step 4</span>
+              <strong>把報表串起來</strong>
+              <p>損益表的淨利會影響權益，權益又會出現在資產負債表；現金流量表則解釋現金為什麼增加或減少。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-grid">
+          <div class="concept-block">
+            <h3>一、會計個體假設</h3>
+            <p>會計個體假設的意思是：企業的帳要和老闆個人的生活分開。即使是獨資商店，會計上仍把「商店」當成一個獨立記帳單位。老闆拿自己的錢投入商店，對商店來說是業主資本增加；老闆從商店拿錢回家用，對商店來說是業主提取。</p>
+            <ul>
+              <li>企業買設備：是企業資產增加。</li>
+              <li>老闆家裡買冰箱：通常不是企業交易。</li>
+              <li>商店代老闆付私人費用：要清楚記為業主往來或提取性質。</li>
+            </ul>
+          </div>
+
+          <div class="concept-block">
+            <h3>二、繼續經營假設</h3>
+            <p>繼續經營假設表示，除非有明顯反證，會計通常假定企業會持續營運下去。這個假設會影響資產的衡量方式。例如一台設備不是買來立刻賣掉，而是預計長期使用，所以不會只看今天清算能賣多少，而會透過折舊把成本分攤到使用期間。</p>
+            <ul>
+              <li>設備可以分年折舊。</li>
+              <li>預付費用可以在受益期間逐步轉費用。</li>
+              <li>若企業即將清算，報表衡量基礎可能需要改變。</li>
+            </ul>
+          </div>
+
+          <div class="concept-block">
+            <h3>三、期間假設與權責發生基礎</h3>
+            <p>企業會一直營運，但報表使用者需要定期知道結果，所以會計把企業活動切成月份、季度或年度。權責發生基礎則要求收入與費用依實際發生期間認列，不是只看現金何時收付。</p>
+            <ul>
+              <li>本月已完成服務，即使下月才收錢，本月仍可能認列收入。</li>
+              <li>本月已使用水電，即使下月才付款，本月仍應認列費用。</li>
+              <li>這能讓損益表比較真實反映本期經營成果。</li>
+            </ul>
+          </div>
+
+          <div class="concept-block">
+            <h3>四、貨幣衡量與成本觀念</h3>
+            <p>會計主要記錄能用貨幣可靠衡量的事項。企業員工很努力、品牌形象很好，雖然重要，但如果不能可靠用金額衡量，通常不會直接入帳。成本觀念則常用取得資產時的成本作為入帳基礎，讓記錄較客觀。</p>
+            <ul>
+              <li>購買設備 80,000 元，可用成本入帳。</li>
+              <li>老闆很有經驗，通常不會直接列為資產。</li>
+              <li>會計重視可驗證、可比較與可靠性。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tool">
+          <h3>主要財務報表速懂</h3>
+          <p>財務報表不是四張互不相干的表，而是一組從不同角度觀察企業的工具。初學時可以先把它們記成：狀況、成果、權益、現金。</p>
+          <div class="formula-strip">
+            <div class="formula-card">
+              <strong>資產負債表</strong>
+              <p>看某一個日期企業有多少資產、負債與權益。它回答：「這家公司現在財務結構如何？」</p>
+            </div>
+            <div class="formula-card">
+              <strong>損益表</strong>
+              <p>看一段期間收入、費用與淨利。它回答：「這段時間到底賺錢還是虧錢？」</p>
+            </div>
+            <div class="formula-card">
+              <strong>現金流量表</strong>
+              <p>看現金從營業、投資、籌資活動流入或流出。它回答：「現金為什麼變多或變少？」</p>
+            </div>
+          </div>
+          <div class="formula-strip">
+            <div class="formula-card">
+              <strong>權益變動表</strong>
+              <p>說明業主權益或股東權益如何變動，例如投資、提取、淨利與分配盈餘。</p>
+            </div>
+            <div class="formula-card">
+              <strong>附註</strong>
+              <p>補充報表數字背後的會計政策、估計、明細與重大事項，幫助使用者正確解讀。</p>
+            </div>
+            <div class="formula-card">
+              <strong>報表關聯</strong>
+              <p>損益表的淨利會進入權益變動；期末權益會出現在資產負債表；現金變動由現金流量表解釋。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="example-box">
+          <h3>報表怎麼串起來？用一間小店來看</h3>
+          <p>假設小店本月服務收入 60,000 元、薪資與租金等費用 38,000 元，業主沒有追加投資，也沒有提取現金。</p>
+          <ol>
+            <li>損益表先計算本月淨利：60,000 - 38,000 = 22,000。</li>
+            <li>淨利會使業主權益增加，因此權益變動表會增加 22,000。</li>
+            <li>期末資產負債表會把更新後的業主權益列出，仍要符合「資產 = 負債 + 權益」。</li>
+            <li>如果收入有一部分尚未收到現金，損益表仍可能有收入，但現金流量表會另外說明實際現金變動。</li>
+          </ol>
+        </div>
+
+        <div class="tool">
+          <h3>初學者最常搞混的觀念</h3>
+          <div class="practice-list">
+            <div class="practice-item">
+              <strong>淨利不等於現金增加。</strong>
+              <p>有收入可能還沒收到錢，有費用也可能還沒付款，所以損益表的淨利不一定等於現金流入。</p>
+            </div>
+            <div class="practice-item">
+              <strong>資產多不一定代表賺很多。</strong>
+              <p>資產可能來自借款，也可能來自業主投資；要看獲利能力，需要搭配損益表。</p>
+            </div>
+            <div class="practice-item">
+              <strong>收入不是收錢才算，費用也不是付錢才算。</strong>
+              <p>權責發生基礎重視交易實際發生的期間，而不是單純看現金收付日期。</p>
+            </div>
+            <div class="practice-item">
+              <strong>報表日期要看清楚。</strong>
+              <p>資產負債表是某一天；損益表、權益變動表與現金流量表是一段期間。日期不同，解讀方式就不同。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool">
+          <h3>學完第二章，你應該能做到</h3>
+          <div class="practice-list">
+            <div class="practice-item">能說明為什麼企業帳務要和老闆個人生活分開。</div>
+            <div class="practice-item">能用權責發生基礎判斷收入與費用應屬於哪一期。</div>
+            <div class="practice-item">能分辨資產負債表與損益表的目的與日期差異。</div>
+            <div class="practice-item">能說出淨利如何影響業主權益。</div>
+            <div class="practice-item">能理解為什麼賺錢不一定代表現金變多。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="chapter3">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">第三章詳解</p>
+          <h2>會計處理六大程序（上）：從交易到帳簿的第一段路</h2>
+        </div>
+        <p>第三章開始進入「怎麼做帳」。對零基礎學員來說，最重要的是不要急著背分錄，而是學會一套固定流程：看懂交易、找出科目、判斷增減、寫成分錄，再把分錄放進日記帳與分類帳。</p>
+      </div>
+
+      <div class="chapter-detail">
+        <div class="tool">
+          <h3>六大程序先看全貌</h3>
+          <p class="result">完整會計循環通常可拆成：交易分析、分錄、過帳、試算、調整、結帳與編表。第三章（上）聚焦前半段，讓你先把每筆交易正確變成帳簿資料。</p>
+          <div class="learning-path">
+            <div class="path-item">
+              <span class="tag blue">Step 1</span>
+              <strong>交易分析</strong>
+              <p>先問：這件事是否影響企業財務？影響哪些科目？每個科目是增加還是減少？</p>
+            </div>
+            <div class="path-item">
+              <span class="tag">Step 2</span>
+              <strong>編製分錄</strong>
+              <p>把交易寫成借方與貸方。每筆分錄至少有一個借方與一個貸方，且金額必須相等。</p>
+            </div>
+            <div class="path-item">
+              <span class="tag amber">Step 3</span>
+              <strong>登錄日記帳</strong>
+              <p>日記帳按照日期記錄交易，是交易發生順序的完整軌跡，也方便日後查核。</p>
+            </div>
+            <div class="path-item">
+              <span class="tag rose">Step 4</span>
+              <strong>過入分類帳</strong>
+              <p>分類帳把同一科目的所有變動集中起來，例如現金、應收帳款、應付帳款各自整理。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-grid">
+          <div class="concept-block">
+            <h3>一、交易分析：分錄前一定要先想清楚</h3>
+            <p>交易分析是會計處理的第一步，也是最容易被初學者跳過的一步。看到題目時，請先用白話說出企業發生了什麼事，再把白話翻成會計科目。</p>
+            <ul>
+              <li>收到現金：現金增加。</li>
+              <li>賒銷商品：應收帳款增加，收入增加。</li>
+              <li>賒購用品：用品或存貨增加，應付帳款增加。</li>
+              <li>支付租金：現金減少，租金費用增加。</li>
+            </ul>
+          </div>
+
+          <div class="concept-block">
+            <h3>二、分錄：把判斷寫成借貸語言</h3>
+            <p>分錄是會計的基本句子。每一筆分錄都在說明：哪個科目記借方、哪個科目記貸方、金額是多少。分錄寫得好，後面的日記帳、分類帳、試算表才會順。</p>
+            <ul>
+              <li>先寫借方科目，再寫貸方科目。</li>
+              <li>借方金額與貸方金額必須相等。</li>
+              <li>摘要要能看出交易內容。</li>
+              <li>不要用「借錢、貸款」理解借貸，要用左右方理解。</li>
+            </ul>
+          </div>
+
+          <div class="concept-block">
+            <h3>三、日記帳：依時間順序留下交易紀錄</h3>
+            <p>日記帳像企業的交易日誌，按照日期排列，把每一筆分錄完整寫下來。它的好處是能保留交易發生的前後順序，查帳時也能回頭看當時為什麼這樣記。</p>
+            <ul>
+              <li>日期：交易發生的日期。</li>
+              <li>科目：借方與貸方科目。</li>
+              <li>金額：借貸金額分欄記錄。</li>
+              <li>摘要：簡短說明交易原因。</li>
+            </ul>
+          </div>
+
+          <div class="concept-block">
+            <h3>四、分類帳：把同一科目集中管理</h3>
+            <p>如果只看日記帳，你會知道每一天發生了什麼，但很難立刻知道「現金現在剩多少」。分類帳就是把同一科目的借方與貸方集中，方便計算餘額。</p>
+            <ul>
+              <li>現金分類帳：彙整所有現金收付。</li>
+              <li>應收帳款分類帳：追蹤客戶欠款。</li>
+              <li>應付帳款分類帳：追蹤企業欠供應商款項。</li>
+              <li>收入與費用分類帳：累積本期經營成果。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tool">
+          <h3>分錄判斷四問法</h3>
+          <p>遇到任何交易題，先照這四個問題走。這比直接背答案更穩，因為題目只要改一點點，死背就容易錯。</p>
+          <div class="formula-strip">
+            <div class="formula-card">
+              <strong>1. 企業發生什麼事？</strong>
+              <p>先用白話說出交易。例如「客戶付現金給公司」、「公司先賒購商品」。</p>
+            </div>
+            <div class="formula-card">
+              <strong>2. 影響哪些科目？</strong>
+              <p>把白話翻成科目。例如現金、應收帳款、存貨、應付帳款、銷貨收入。</p>
+            </div>
+            <div class="formula-card">
+              <strong>3. 科目增加還是減少？</strong>
+              <p>判斷每個科目的方向。例如現金增加、應付帳款增加、費用增加。</p>
+            </div>
+          </div>
+          <div class="formula-strip">
+            <div class="formula-card">
+              <strong>4. 借方還是貸方？</strong>
+              <p>套用法則：資產與費損增加在借方；負債、權益與收益增加在貸方。</p>
+            </div>
+            <div class="formula-card">
+              <strong>最後檢查平衡</strong>
+              <p>借方總額必須等於貸方總額。若不相等，表示科目、方向或金額至少有一處錯誤。</p>
+            </div>
+            <div class="formula-card">
+              <strong>再寫摘要</strong>
+              <p>摘要不用很長，但要看得出交易內容，例如「業主投資」、「支付租金」、「賒購商品」。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="example-box">
+          <h3>範例一：業主投入現金 100,000 元</h3>
+          <p>這是初學分錄最常見的題型。請不要直接背答案，照流程拆解：</p>
+          <ol>
+            <li>企業收到現金，所以「現金」增加。</li>
+            <li>現金是資產，資產增加記借方。</li>
+            <li>這筆錢來自業主投入，所以「業主資本」增加。</li>
+            <li>業主資本是權益，權益增加記貸方。</li>
+            <li>分錄：借記現金 100,000；貸記業主資本 100,000。</li>
+          </ol>
+        </div>
+
+        <div class="example-box">
+          <h3>範例二：賒購商品 30,000 元</h3>
+          <p>「賒購」代表現在拿到商品，但還沒有付錢。這類題目最適合練習資產與負債同時增加。</p>
+          <ol>
+            <li>商品增加，對買賣業來說通常會影響存貨或進貨相關科目。</li>
+            <li>尚未付款，所以企業多了一項對供應商的義務，應付帳款增加。</li>
+            <li>存貨或進貨增加通常記借方。</li>
+            <li>應付帳款是負債，負債增加記貸方。</li>
+            <li>分錄可寫成：借記存貨或進貨 30,000；貸記應付帳款 30,000。</li>
+          </ol>
+        </div>
+
+        <div class="tool">
+          <h3>T 字帳如何幫助你理解分類帳？</h3>
+          <p>T 字帳是分類帳的簡化圖像。左邊是借方，右邊是貸方。初學者可以先用 T 字帳練習科目增減，再進入正式分類帳格式。</p>
+          <div class="formula-strip">
+            <div class="formula-card">
+              <strong>現金 T 字帳</strong>
+              <p>借方記現金增加，貸方記現金減少。若借方合計大於貸方合計，現金有借方餘額。</p>
+            </div>
+            <div class="formula-card">
+              <strong>應付帳款 T 字帳</strong>
+              <p>貸方記負債增加，借方記負債減少。正常情況下，應付帳款多為貸方餘額。</p>
+            </div>
+            <div class="formula-card">
+              <strong>收入 T 字帳</strong>
+              <p>收入增加記貸方。期末結帳前，收入科目通常會有貸方餘額。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool">
+          <h3>第三章常見錯誤</h3>
+          <div class="practice-list">
+            <div class="practice-item">
+              <strong>錯誤一：看到付錢就只想到費用。</strong>
+              <p>付錢可能是買設備、還負債、預付費用或支付當期費用，要看支出的性質與受益期間。</p>
+            </div>
+            <div class="practice-item">
+              <strong>錯誤二：賒購時忘記應付帳款。</strong>
+              <p>賒購沒有現金流出，但會產生負債。不能因為沒付錢就不入帳。</p>
+            </div>
+            <div class="practice-item">
+              <strong>錯誤三：借貸金額不相等。</strong>
+              <p>每筆分錄都要平衡。若借貸不等，後面的試算表一定會出問題。</p>
+            </div>
+            <div class="practice-item">
+              <strong>錯誤四：把日記帳和分類帳混在一起。</strong>
+              <p>日記帳按日期記錄交易；分類帳按科目整理資料。兩者功能不同，但資料彼此連接。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool">
+          <h3>學完第三章（上），你應該能做到</h3>
+          <div class="practice-list">
+            <div class="practice-item">能依交易內容找出受影響的會計科目。</div>
+            <div class="practice-item">能判斷每個科目是增加還是減少。</div>
+            <div class="practice-item">能寫出基本一借一貸或多借多貸分錄。</div>
+            <div class="practice-item">能理解日記帳是按時間記錄，分類帳是按科目整理。</div>
+            <div class="practice-item">能用 T 字帳檢查某科目的增減與餘額方向。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="chapter4">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">第四章詳解</p>
+          <h2>會計處理六大程序（下）：從帳簿檢查到編製報表</h2>
+        </div>
+        <p>第四章接續第三章，把已經記入日記帳與分類帳的資料，整理成能用來編製財務報表的狀態。對初學者來說，這一章的重點是理解「為什麼要試算、為什麼要調整、為什麼要結帳」。</p>
+      </div>
+
+      <div class="chapter-detail">
+        <div class="tool">
+          <h3>下半段流程先看全貌</h3>
+          <p class="result">前半段是把交易記進帳簿；後半段是把帳簿整理成報表。你可以把第四章想成期末整理工作：先檢查、再修正、再歸零、最後輸出報表。</p>
+          <div class="learning-path">
+            <div class="path-item">
+              <span class="tag blue">Step 1</span>
+              <strong>試算</strong>
+              <p>把分類帳各科目的餘額列出，檢查借方合計是否等於貸方合計，先抓出明顯的借貸不平衡。</p>
+            </div>
+            <div class="path-item">
+              <span class="tag">Step 2</span>
+              <strong>調整</strong>
+              <p>把尚未入帳或期間歸屬不正確的收入、費用、資產與負債修正到正確期間。</p>
+            </div>
+            <div class="path-item">
+              <span class="tag amber">Step 3</span>
+              <strong>結帳</strong>
+              <p>把收入、費用等暫時性科目歸零，將本期損益轉入業主權益，準備進入下一期。</p>
+            </div>
+            <div class="path-item">
+              <span class="tag rose">Step 4</span>
+              <strong>編表</strong>
+              <p>依調整後的正確資料編製損益表、權益變動表、資產負債表等財務報表。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-grid">
+          <div class="concept-block">
+            <h3>一、試算：先確認借貸是否平衡</h3>
+            <p>試算表是把分類帳中各科目的餘額列出，分成借方餘額與貸方餘額，檢查兩邊合計是否相等。它像是期末前的第一道檢查，但要注意：試算平衡不代表帳一定完全正確。</p>
+            <ul>
+              <li>能發現借貸金額不相等的錯誤。</li>
+              <li>能整理各科目期末餘額。</li>
+              <li>不能保證科目用對，也不能保證交易沒有漏記。</li>
+              <li>試算表不是正式財務報表，而是編表前的工作底稿。</li>
+            </ul>
+          </div>
+
+          <div class="concept-block">
+            <h3>二、調整：把收入與費用放回正確期間</h3>
+            <p>調整分錄是第四章的核心。因為企業交易常常不是剛好在收付現金時就完成，例如先收錢但尚未服務、先付錢但尚未耗用、已經使用水電但還沒收到帳單。調整的目的，就是讓報表符合權責發生基礎。</p>
+            <ul>
+              <li>預付費用：先列資產，耗用後轉費用。</li>
+              <li>預收收入：先列負債，賺得後轉收入。</li>
+              <li>應計收入：已賺得但尚未收款。</li>
+              <li>應計費用：已發生但尚未付款。</li>
+            </ul>
+          </div>
+
+          <div class="concept-block">
+            <h3>三、結帳：把本期損益收尾</h3>
+            <p>收入與費用只用來衡量某一期間的經營成果，因此期末要結帳，把它們的餘額歸零，下一期才能重新累積。結帳後，淨利或淨損會影響業主權益。</p>
+            <ul>
+              <li>收入科目結轉後歸零。</li>
+              <li>費用科目結轉後歸零。</li>
+              <li>本期淨利會增加業主權益。</li>
+              <li>本期淨損會減少業主權益。</li>
+            </ul>
+          </div>
+
+          <div class="concept-block">
+            <h3>四、編表：把帳簿資料轉成報表語言</h3>
+            <p>編製財務報表不是重新發明資料，而是把調整後的帳簿餘額依報表格式呈現。損益表通常先編，因為淨利會影響權益；接著編權益變動表，再編資產負債表。</p>
+            <ul>
+              <li>損益表：收入 - 費用 = 淨利或淨損。</li>
+              <li>權益變動表：期初權益 + 投資 - 提取 + 淨利或 - 淨損。</li>
+              <li>資產負債表：資產 = 負債 + 權益。</li>
+              <li>報表要能讓使用者理解企業狀況，而不只是列數字。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tool">
+          <h3>調整分錄四大類</h3>
+          <p>初學調整時，先把題目放進下列四類。只要分類正確，分錄方向通常就能跟著判斷出來。</p>
+          <div class="formula-strip">
+            <div class="formula-card">
+              <strong>預付費用</strong>
+              <p>例如預付一年租金。付款時先列資產；期末依已使用期間轉列租金費用。</p>
+            </div>
+            <div class="formula-card">
+              <strong>預收收入</strong>
+              <p>例如先收學費或服務費。收款時先列負債；服務完成後轉列收入。</p>
+            </div>
+            <div class="formula-card">
+              <strong>應計收入</strong>
+              <p>已提供服務但還沒收錢。期末要認列收入，同時列應收款項。</p>
+            </div>
+          </div>
+          <div class="formula-strip">
+            <div class="formula-card">
+              <strong>應計費用</strong>
+              <p>費用已發生但還沒付款，例如本月薪資下月才付。期末要認列費用與應付款。</p>
+            </div>
+            <div class="formula-card">
+              <strong>折舊</strong>
+              <p>把設備成本分攤到使用期間。常見分錄是借記折舊費用，貸記累計折舊。</p>
+            </div>
+            <div class="formula-card">
+              <strong>用品盤點</strong>
+              <p>用品買入後若先列資產，期末要依實際耗用部分轉列用品費用。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="example-box">
+          <h3>範例一：預付租金的調整</h3>
+          <p>企業 1 月 1 日支付一年租金 120,000 元，付款時先列「預付租金」。到 1 月 31 日時，已經使用 1 個月。</p>
+          <ol>
+            <li>一年租金 120,000，每月租金成本是 10,000。</li>
+            <li>1 月已經使用一個月，所以應認列租金費用 10,000。</li>
+            <li>預付租金原本是資產，已耗用部分要減少。</li>
+            <li>調整分錄：借記租金費用 10,000；貸記預付租金 10,000。</li>
+          </ol>
+        </div>
+
+        <div class="example-box">
+          <h3>範例二：預收收入的調整</h3>
+          <p>企業先收到客戶服務費 30,000 元，收款時列為「預收收入」。期末發現其中 12,000 元的服務已經完成。</p>
+          <ol>
+            <li>預收收入原本是負債，因為企業尚未完成服務。</li>
+            <li>已完成 12,000 元服務，代表這部分已經賺得。</li>
+            <li>負債應減少，收入應增加。</li>
+            <li>調整分錄：借記預收收入 12,000；貸記服務收入 12,000。</li>
+          </ol>
+        </div>
+
+        <div class="tool">
+          <h3>結帳時哪些科目要歸零？</h3>
+          <p>判斷是否要結帳，先看它是暫時性科目還是永久性科目。暫時性科目只衡量本期，期末要歸零；永久性科目會延續到下一期。</p>
+          <div class="formula-strip">
+            <div class="formula-card">
+              <strong>暫時性科目</strong>
+              <p>收入、費用、業主提取等科目，期末通常要結清，讓下一期重新累積。</p>
+            </div>
+            <div class="formula-card">
+              <strong>永久性科目</strong>
+              <p>資產、負債、業主資本等科目不會因期末結帳歸零，餘額會帶到下一期。</p>
+            </div>
+            <div class="formula-card">
+              <strong>結帳目的</strong>
+              <p>讓本期經營成果歸入權益，同時讓下一期收入與費用從零開始。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool">
+          <h3>第四章常見錯誤</h3>
+          <div class="practice-list">
+            <div class="practice-item">
+              <strong>錯誤一：以為試算平衡就完全正確。</strong>
+              <p>若整筆交易漏記，或借貸方向同時記錯，試算仍可能平衡，所以還要檢查科目與交易內容。</p>
+            </div>
+            <div class="practice-item">
+              <strong>錯誤二：忘記做調整分錄。</strong>
+              <p>沒有調整，收入與費用可能放錯期間，資產與負債也可能高估或低估。</p>
+            </div>
+            <div class="practice-item">
+              <strong>錯誤三：把所有科目都結清。</strong>
+              <p>只有暫時性科目需要結帳歸零；資產、負債與業主資本等永久性科目要延續到下一期。</p>
+            </div>
+            <div class="practice-item">
+              <strong>錯誤四：編表順序混亂。</strong>
+              <p>通常先有損益表的淨利，再影響權益變動表，最後才完整呈現資產負債表的權益數字。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool">
+          <h3>學完第四章（下），你應該能做到</h3>
+          <div class="practice-list">
+            <div class="practice-item">能說明試算表的用途與限制。</div>
+            <div class="practice-item">能判斷常見調整事項屬於預付、預收、應計或折舊。</div>
+            <div class="practice-item">能寫出基本調整分錄。</div>
+            <div class="practice-item">能分辨暫時性科目與永久性科目。</div>
+            <div class="practice-item">能理解損益表、權益變動表與資產負債表的編製順序。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="deep">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">進階整理</p>
+          <h2>把 PDF 章節轉成判斷表</h2>
+        </div>
+        <p>這一段補上原本課程較少的分類與借貸判斷，方便學生把「定義」轉成「做題流程」。</p>
+      </div>
+      <div class="deep-layout">
+        <div class="tool">
+          <h3>五大要素與判斷焦點</h3>
+          <table class="rule-table">
+            <thead>
+              <tr>
+                <th>要素</th>
+                <th>判斷重點</th>
+                <th>常見例子</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>資產</td>
+                <td>企業控制、來自過去交易、未來可帶來經濟效益。</td>
+                <td>現金、應收帳款、存貨、設備。</td>
+              </tr>
+              <tr>
+                <td>負債</td>
+                <td>企業現有義務，未來清償時會使經濟效益流出。</td>
+                <td>應付帳款、短期借款、預收收入。</td>
+              </tr>
+              <tr>
+                <td>業主權益</td>
+                <td>資產扣除負債後的剩餘權益，會受投資、提取與損益影響。</td>
+                <td>業主資本、保留盈餘、普通股股本。</td>
+              </tr>
+              <tr>
+                <td>收益</td>
+                <td>因收入或利益使權益增加，且不是業主投入。</td>
+                <td>銷貨收入、租金收入、利息收入。</td>
+              </tr>
+              <tr>
+                <td>費損</td>
+                <td>為取得收益而耗用成本或產生損失，使權益減少。</td>
+                <td>薪資、折舊、銷貨成本、佣金費用。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tool">
+          <h3>科目層級</h3>
+          <div class="steps">
+            <div class="step">
+              <strong>第一級：類別</strong>
+              <p>資產、負債、業主權益、收益、費損。</p>
+            </div>
+            <div class="step">
+              <strong>第二級：性質別</strong>
+              <p>例如資產可分流動資產、固定資產、其他資產。</p>
+            </div>
+            <div class="step">
+              <strong>第三級：科目別</strong>
+              <p>例如現金、銀行存款、應收票據、應收帳款。</p>
+            </div>
+            <div class="step">
+              <strong>第四、五級：子目與細目</strong>
+              <p>例如銀行存款下再分銀行別、存款種類，讓管理與查核更細緻。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tool" style="margin-top:16px;">
+        <h3>借貸法則速查</h3>
+        <table class="rule-table">
+          <thead>
+            <tr>
+              <th>科目類型</th>
+              <th>增加</th>
+              <th>減少</th>
+              <th>正常餘額</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>資產</td><td>借方</td><td>貸方</td><td>借方</td></tr>
+            <tr><td>負債</td><td>貸方</td><td>借方</td><td>貸方</td></tr>
+            <tr><td>業主權益</td><td>貸方</td><td>借方</td><td>貸方</td></tr>
+            <tr><td>收益</td><td>貸方</td><td>借方</td><td>貸方</td></tr>
+            <tr><td>費損</td><td>借方</td><td>貸方</td><td>借方</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="equation">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">互動工具</p>
+          <h2>會計恆等式檢查器</h2>
+        </div>
+        <p>基本式是「資產 = 負債 + 業主權益」。虧損、增資、提取、收益與費損都不會破壞平衡，只會改變右邊或左邊的組成。</p>
+      </div>
+      <div class="tool">
+        <div class="equation">
+          <div>
+            <label for="assets">資產</label>
+            <input id="assets" type="number" min="0" value="562000">
+          </div>
+          <div>
+            <label for="liabilities">負債</label>
+            <input id="liabilities" type="number" min="0" value="123000">
+          </div>
+          <div>
+            <label for="equity">業主權益</label>
+            <input id="equity" type="number" min="0" value="439000">
+          </div>
+        </div>
+        <div class="result" id="equationResult" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="quiz">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">觀念測驗</p>
+          <h2>用題目練判斷</h2>
+        </div>
+        <p>題庫依第一章到第四章的核心概念設計成 30 題互動練習。答題時請先判斷章節重點，再看科目類型、借貸方向與報表影響。</p>
+      </div>
+      <div class="quiz-layout">
+        <div class="tool">
+          <h3 id="quizQuestion">題目載入中</h3>
+          <div class="choice-list" id="choiceList"></div>
+          <div class="quiz-actions">
+            <button type="button" id="nextQuestion">下一題</button>
+            <button class="secondary" type="button" id="resetQuiz">重設</button>
+          </div>
+        </div>
+        <div class="tool">
+          <h3>作答回饋</h3>
+          <div class="result" id="quizFeedback">選擇一個答案後，這裡會顯示解析。</div>
+          <p style="margin-top: 14px; color: var(--muted); line-height: 1.7;">得分：<strong id="score">0</strong> / <strong id="answered">0</strong></p>
+        </div>
+      </div>
+      <div class="section-head" style="margin-top: 24px;">
+        <div>
+          <p class="eyebrow">科目借貸小測驗</p>
+          <h2>從小字卡延伸：判斷科目增加或減少的方向</h2>
+        </div>
+        <p>這組題目專門練會計科目的借貸方向。先判斷科目屬於資產、負債、權益、收益或費損，再判斷題目問的是增加還是減少。</p>
+      </div>
+      <div class="quiz-layout">
+        <div class="tool">
+          <h3 id="accountQuizQuestion">題目載入中</h3>
+          <div class="choice-list" id="accountChoiceList"></div>
+          <div class="quiz-actions">
+            <button type="button" id="nextAccountQuestion">下一題</button>
+            <button class="secondary" type="button" id="resetAccountQuiz">重設</button>
+          </div>
+        </div>
+        <div class="tool">
+          <h3>借貸判斷回饋</h3>
+          <div class="result" id="accountQuizFeedback">選擇一個答案後，這裡會顯示解析。</div>
+          <p style="margin-top: 14px; color: var(--muted); line-height: 1.7;">得分：<strong id="accountScore">0</strong> / <strong id="accountAnswered">0</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="flashcards">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">會計科目小字卡</p>
+          <h2>用翻卡記住科目類別與借貸方向</h2>
+        </div>
+        <p>目前 OneDrive 檔案無法直接讀取，因此先依會計五大要素整理成可互動小字卡。點擊卡片可翻面查看定義、常見例子與正常餘額。</p>
+      </div>
+      <div class="tool">
+        <div class="filter-bar" id="flashcardFilters" aria-label="科目分類篩選"></div>
+        <div class="flashcard-grid" id="flashcardGrid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="terms">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">名詞庫</p>
+          <h2>容易混淆的會計語言</h2>
+        </div>
+        <p>將名詞放回交易情境會更好記：誰收了錢、誰先付了錢、企業是否已經賺得，會直接影響科目歸類。</p>
+      </div>
+      <div class="terms">
+        <div class="term-buttons" id="termButtons"></div>
+        <div class="tool">
+          <h3 id="termTitle"></h3>
+          <div class="result" id="termBody"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const progressFill = document.getElementById("progressFill");
+    progressFill.style.width = "100%";
+
+    const assets = document.getElementById("assets");
+    const liabilities = document.getElementById("liabilities");
+    const equity = document.getElementById("equity");
+    const equationResult = document.getElementById("equationResult");
+
+    function formatNumber(value) {
+      return Number(value || 0).toLocaleString("zh-Hant-TW");
+    }
+
+    function checkEquation() {
+      const assetValue = Number(assets.value || 0);
+      const liabilityValue = Number(liabilities.value || 0);
+      const equityValue = Number(equity.value || 0);
+      const rightSide = liabilityValue + equityValue;
+      const difference = assetValue - rightSide;
+
+      if (difference === 0) {
+        equationResult.innerHTML = `<strong style="color:#0f766e;">平衡。</strong> 資產 ${formatNumber(assetValue)} = 負債 ${formatNumber(liabilityValue)} + 業主權益 ${formatNumber(equityValue)}。`;
+      } else if (difference > 0) {
+        equationResult.innerHTML = `<strong style="color:#b45309;">尚未平衡。</strong> 左方多出 ${formatNumber(difference)}，請檢查是否漏列負債或權益。`;
+      } else {
+        equationResult.innerHTML = `<strong style="color:#be123c;">尚未平衡。</strong> 右方多出 ${formatNumber(Math.abs(difference))}，請檢查資產是否少列或右方是否高估。`;
+      }
+    }
+
+    [assets, liabilities, equity].forEach((input) => input.addEventListener("input", checkEquation));
+    checkEquation();
+
+    const questions = [
+      {
+        text: "【第一章】會計最主要的目的，是把企業活動整理成什麼？",
+        choices: ["只給老闆看的收據", "可供決策使用的財務資訊", "銀行存款明細", "員工薪資清冊"],
+        answer: 1,
+        explain: "會計的核心是把交易記錄、分類、彙總並報導，讓管理者、投資人、債權人等使用者能做決策。"
+      },
+      {
+        text: "【第一章】下列哪一項最可能屬於會計需要記錄的交易？",
+        choices: ["老闆覺得品牌形象變好", "員工今天心情很好", "公司賒購辦公用品", "店面位置看起來不錯"],
+        answer: 2,
+        explain: "賒購辦公用品會使用品或費用增加，也會產生應付帳款，能用金額衡量且影響財務狀況。"
+      },
+      {
+        text: "【第一章】會計恆等式正確表示為哪一個？",
+        choices: ["資產 = 負債 + 業主權益", "負債 = 資產 + 業主權益", "收益 = 資產 - 負債", "費用 = 收益 + 權益"],
+        answer: 0,
+        explain: "資產代表企業擁有或控制的資源；負債與業主權益代表資源來源，所以資產 = 負債 + 業主權益。"
+      },
+      {
+        text: "【第一章】企業收到客戶預付的服務費，但服務尚未完成，應先視為什麼？",
+        choices: ["資產", "負債", "收益", "費損"],
+        answer: 1,
+        explain: "尚未完成服務前，企業有未來提供服務的義務，因此預收款應先列為負債。"
+      },
+      {
+        text: "【第一章】會計上的「借方」最精準的意思是什麼？",
+        choices: ["向別人借錢", "帳戶左方", "欠別人錢", "收入增加"],
+        answer: 1,
+        explain: "借方只是帳戶左方，貸方是帳戶右方。增加或減少要看科目類別判斷。"
+      },
+      {
+        text: "【第一章】下列哪一組借貸法則正確？",
+        choices: ["資產增加記貸方", "負債增加記借方", "費用增加記借方", "收入增加記借方"],
+        answer: 2,
+        explain: "資產與費用增加通常記借方；負債、權益與收入增加通常記貸方。"
+      },
+      {
+        text: "【第一章】業主投入現金 80,000 元設立商店，最合理的分錄方向是？",
+        choices: ["借：現金；貸：業主資本", "借：業主資本；貸：現金", "借：費用；貸：現金", "借：現金；貸：收入"],
+        answer: 0,
+        explain: "現金是資產，增加記借方；業主投入使業主資本增加，權益增加記貸方。"
+      },
+      {
+        text: "【第二章】會計個體假設主要強調什麼？",
+        choices: ["企業帳務要和業主個人生活分開", "企業一定不會倒閉", "所有資產都用市價入帳", "收入一定在收現時認列"],
+        answer: 0,
+        explain: "會計個體假設把企業視為獨立記帳單位，所以業主個人支出不應直接混入企業費用。"
+      },
+      {
+        text: "【第二章】繼續經營假設會支持下列哪一種處理？",
+        choices: ["設備成本可分期折舊", "所有資產都立刻列費用", "報表不需要分期", "收入只在收到現金時認列"],
+        answer: 0,
+        explain: "若假定企業會持續經營，長期資產可在使用期間分攤成本，也就是折舊。"
+      },
+      {
+        text: "【第二章】權責發生基礎下，收入通常在何時認列？",
+        choices: ["收到現金時", "服務完成或商品交付、收入已賺得時", "老闆同意時", "月底一定認列"],
+        answer: 1,
+        explain: "權責發生基礎重視收入是否已賺得，不是只看現金何時收到。"
+      },
+      {
+        text: "【第二章】已使用本月水電，但帳單下月才付款，本月應如何理解？",
+        choices: ["本月完全不用記", "本月應認列費用", "下月才產生費用", "列為收入"],
+        answer: 1,
+        explain: "水電已在本月耗用，費用已發生；即使下月付款，本月仍應認列費用。"
+      },
+      {
+        text: "【第二章】資產負債表主要呈現什麼？",
+        choices: ["某一日期的財務狀況", "一段期間的收入與費用", "一段期間的現金流入流出", "員工工作效率"],
+        answer: 0,
+        explain: "資產負債表是時點報表，呈現某一日期的資產、負債與權益。"
+      },
+      {
+        text: "【第二章】損益表主要用來回答哪個問題？",
+        choices: ["公司某一天有多少資產", "公司這段期間賺錢或虧錢", "公司有多少員工", "公司本期支票號碼"],
+        answer: 1,
+        explain: "損益表彙總一段期間的收入與費用，用來計算淨利或淨損。"
+      },
+      {
+        text: "【第二章】淨利和現金增加的關係，下列哪一項正確？",
+        choices: ["淨利一定等於現金增加", "淨利一定小於現金增加", "淨利不一定等於現金增加", "有淨利就不會有應收帳款"],
+        answer: 2,
+        explain: "權責發生基礎下，收入可能尚未收現、費用可能尚未付款，所以淨利不一定等於現金增加。"
+      },
+      {
+        text: "【第二章】損益表的淨利通常會影響哪一個報表項目？",
+        choices: ["業主權益", "應付帳款一定減少", "存貨一定增加", "現金一定減少"],
+        answer: 0,
+        explain: "淨利會增加業主權益；淨損會減少業主權益。"
+      },
+      {
+        text: "【第三章】會計處理中，編製分錄之前最應先做什麼？",
+        choices: ["結帳", "交易分析", "編製資產負債表", "折舊計算"],
+        answer: 1,
+        explain: "分錄前要先分析交易，找出受影響科目、科目類別、增加或減少。"
+      },
+      {
+        text: "【第三章】每一筆分錄最基本的要求是什麼？",
+        choices: ["只能有一個科目", "借方金額等於貸方金額", "一定要有現金", "一定要有收入"],
+        answer: 1,
+        explain: "複式簿記要求借貸平衡，因此每筆分錄借方總額必須等於貸方總額。"
+      },
+      {
+        text: "【第三章】日記帳的主要功能是什麼？",
+        choices: ["依日期記錄交易", "只記現金收支", "只列期末餘額", "只編製報表"],
+        answer: 0,
+        explain: "日記帳按時間順序記錄交易分錄，保留交易發生的完整軌跡。"
+      },
+      {
+        text: "【第三章】分類帳的主要功能是什麼？",
+        choices: ["把同一科目的變動集中整理", "取代所有財務報表", "只記錄老闆私人支出", "只記錄尚未付款交易"],
+        answer: 0,
+        explain: "分類帳會把同一科目的借貸變動集中，例如現金分類帳可看出現金餘額。"
+      },
+      {
+        text: "【第三章】企業賒購用品 12,000 元，最合理的科目影響是？",
+        choices: ["用品增加，應付帳款增加", "現金增加，收入增加", "費用減少，負債減少", "業主資本增加，現金減少"],
+        answer: 0,
+        explain: "賒購表示取得用品但尚未付款，所以用品或用品資產增加，應付帳款也增加。"
+      },
+      {
+        text: "【第三章】支付本月租金 10,000 元，最合理的分錄方向是？",
+        choices: ["借：租金費用；貸：現金", "借：現金；貸：租金費用", "借：租金收入；貸：現金", "借：應付帳款；貸：收入"],
+        answer: 0,
+        explain: "租金費用增加記借方；現金是資產，減少記貸方。"
+      },
+      {
+        text: "【第三章】T 字帳左方與右方分別代表什麼？",
+        choices: ["左方貸方，右方借方", "左方借方，右方貸方", "左方收入，右方費用", "左方負債，右方資產"],
+        answer: 1,
+        explain: "T 字帳左方是借方，右方是貸方，是理解分類帳的簡化圖像。"
+      },
+      {
+        text: "【第四章】試算表最主要的用途是什麼？",
+        choices: ["檢查借方合計與貸方合計是否相等", "保證所有交易都正確", "取代損益表", "計算員工薪資"],
+        answer: 0,
+        explain: "試算表可檢查借貸是否平衡，但不能保證交易沒有漏記或科目一定正確。"
+      },
+      {
+        text: "【第四章】試算表平衡代表什麼？",
+        choices: ["帳務一定完全正確", "借貸合計相等", "不用做調整分錄", "不用編財務報表"],
+        answer: 1,
+        explain: "試算平衡只代表借貸合計相等；若整筆交易漏記，試算仍可能平衡。"
+      },
+      {
+        text: "【第四章】預付一年租金，期末已使用其中一個月，應做什麼處理？",
+        choices: ["把已耗用部分轉列租金費用", "全部仍列預付租金", "全部列為收入", "完全不用調整"],
+        answer: 0,
+        explain: "預付租金原本是資產，已耗用部分應轉列當期租金費用。"
+      },
+      {
+        text: "【第四章】已收客戶款項但服務尚未完成，期末完成其中一部分服務時應如何處理？",
+        choices: ["減少預收收入並認列服務收入", "增加預付費用", "增加租金費用", "完全不入帳"],
+        answer: 0,
+        explain: "預收收入是負債；服務完成後，負債減少，已賺得的部分轉列收入。"
+      },
+      {
+        text: "【第四章】下列哪一項屬於應計費用？",
+        choices: ["本月薪資已發生但下月才支付", "先收客戶款但尚未服務", "先付一年保險費", "購買設備立即折舊完畢"],
+        answer: 0,
+        explain: "應計費用是費用已發生但尚未付款，例如本月薪資下月才付。"
+      },
+      {
+        text: "【第四章】期末結帳時，通常需要歸零的是哪一類科目？",
+        choices: ["資產科目", "負債科目", "收入與費用等暫時性科目", "業主資本一定歸零"],
+        answer: 2,
+        explain: "收入、費用、提取等暫時性科目用來衡量本期，期末要結清；資產與負債會延續到下一期。"
+      },
+      {
+        text: "【第四章】編製報表時，通常為什麼損益表會先於資產負債表？",
+        choices: ["因為淨利會影響權益", "因為損益表不需要資料", "因為資產負債表不用平衡", "因為收入一定等於現金"],
+        answer: 0,
+        explain: "損益表計算出的淨利或淨損會影響權益，權益又會出現在資產負債表。"
+      },
+      {
+        text: "【第四章】下列哪一個屬於永久性科目？",
+        choices: ["銷貨收入", "薪資費用", "現金", "租金收入"],
+        answer: 2,
+        explain: "現金是資產，屬於永久性科目，餘額會帶到下一期；收入與費用屬於暫時性科目。"
+      }
+    ];
+
+    const quizQuestion = document.getElementById("quizQuestion");
+    const choiceList = document.getElementById("choiceList");
+    const quizFeedback = document.getElementById("quizFeedback");
+    const scoreEl = document.getElementById("score");
+    const answeredEl = document.getElementById("answered");
+    const nextQuestion = document.getElementById("nextQuestion");
+    const resetQuiz = document.getElementById("resetQuiz");
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = 0;
+    let locked = false;
+
+    function renderQuiz() {
+      locked = false;
+      const item = questions[currentQuestion];
+      quizQuestion.textContent = item.text;
+      choiceList.innerHTML = "";
+      quizFeedback.textContent = "選擇一個答案後，這裡會顯示解析。";
+
+      item.choices.forEach((choice, index) => {
+        const button = document.createElement("button");
+        button.className = "choice";
+        button.type = "button";
+        button.textContent = choice;
+        button.addEventListener("click", () => answerQuestion(index, button));
+        choiceList.appendChild(button);
+      });
+    }
+
+    function answerQuestion(index, button) {
+      if (locked) return;
+      locked = true;
+      const item = questions[currentQuestion];
+      const choices = document.querySelectorAll(".choice");
+      choices[item.answer].classList.add("correct");
+
+      if (index === item.answer) {
+        score += 1;
+        quizFeedback.innerHTML = `<strong style="color:#0f766e;">答對。</strong> ${item.explain}`;
+      } else {
+        button.classList.add("wrong");
+        quizFeedback.innerHTML = `<strong style="color:#be123c;">再想一下。</strong> ${item.explain}`;
+      }
+
+      answered += 1;
+      scoreEl.textContent = score;
+      answeredEl.textContent = answered;
+    }
+
+    nextQuestion.addEventListener("click", () => {
+      currentQuestion = (currentQuestion + 1) % questions.length;
+      renderQuiz();
+    });
+
+    resetQuiz.addEventListener("click", () => {
+      currentQuestion = 0;
+      score = 0;
+      answered = 0;
+      scoreEl.textContent = score;
+      answeredEl.textContent = answered;
+      renderQuiz();
+    });
+
+    renderQuiz();
+
+    const accountQuestions = [
+      {
+        text: "資產類科目增加時，應記在哪一方？",
+        choices: ["借方", "貸方", "不一定", "不需入帳"],
+        answer: 0,
+        explain: "資產類科目的正常增加方向在借方，例如現金、應收帳款、存貨增加都記借方。"
+      },
+      {
+        text: "資產類科目減少時，應記在哪一方？",
+        choices: ["借方", "貸方", "收入方", "權益方"],
+        answer: 1,
+        explain: "資產增加在借方，減少就記相反方向，也就是貸方。"
+      },
+      {
+        text: "負債類科目增加時，應記在哪一方？",
+        choices: ["借方", "貸方", "費用方", "資產方"],
+        answer: 1,
+        explain: "負債類科目的正常增加方向在貸方，例如應付帳款、短期借款增加都記貸方。"
+      },
+      {
+        text: "負債類科目減少時，應記在哪一方？",
+        choices: ["借方", "貸方", "收益方", "不用記"],
+        answer: 0,
+        explain: "負債增加在貸方，減少時記相反方向，也就是借方。"
+      },
+      {
+        text: "業主權益類科目增加時，應記在哪一方？",
+        choices: ["借方", "貸方", "資產方", "費用方"],
+        answer: 1,
+        explain: "業主權益增加記貸方，例如業主投入資本會使權益增加。"
+      },
+      {
+        text: "業主權益類科目減少時，應記在哪一方？",
+        choices: ["借方", "貸方", "收入方", "不需入帳"],
+        answer: 0,
+        explain: "權益增加在貸方，減少時記借方，例如業主提取會使權益減少。"
+      },
+      {
+        text: "收益類科目增加時，應記在哪一方？",
+        choices: ["借方", "貸方", "資產方", "負債方"],
+        answer: 1,
+        explain: "收益增加會使權益增加，因此收益類科目增加記貸方。"
+      },
+      {
+        text: "收益類科目減少或沖減時，應記在哪一方？",
+        choices: ["借方", "貸方", "正常餘額方", "不用記"],
+        answer: 0,
+        explain: "收益正常增加在貸方，因此收益減少或沖減時記借方。"
+      },
+      {
+        text: "費損類科目增加時，應記在哪一方？",
+        choices: ["借方", "貸方", "權益方", "負債方"],
+        answer: 0,
+        explain: "費損增加會使權益減少，費損類科目增加記借方。"
+      },
+      {
+        text: "費損類科目減少或沖減時，應記在哪一方？",
+        choices: ["借方", "貸方", "收入方", "資產方"],
+        answer: 1,
+        explain: "費損正常增加在借方，因此費損減少或沖減時記貸方。"
+      },
+      {
+        text: "下列哪一類科目的正常餘額通常在借方？",
+        choices: ["資產與費損", "負債與收益", "權益與收益", "負債與權益"],
+        answer: 0,
+        explain: "資產與費損增加都記借方，所以正常餘額通常在借方。"
+      },
+      {
+        text: "下列哪一類科目的正常餘額通常在貸方？",
+        choices: ["資產、費損", "負債、權益、收益", "現金、應收帳款", "租金費用、薪資費用"],
+        answer: 1,
+        explain: "負債、權益與收益增加都記貸方，所以正常餘額通常在貸方。"
+      },
+      {
+        text: "若某科目增加時記借方，最可能屬於哪一組類別？",
+        choices: ["資產或費損", "負債或收益", "權益或收益", "負債或權益"],
+        answer: 0,
+        explain: "資產與費損增加時記借方；這是判斷借貸方向最常用的分類規則。"
+      },
+      {
+        text: "若某科目增加時記貸方，最可能屬於哪一組類別？",
+        choices: ["資產或費損", "負債、權益或收益", "資產或收益", "費損或權益"],
+        answer: 1,
+        explain: "負債、權益與收益增加時記貸方。看到增加在貸方，通常先往這三類判斷。"
+      },
+      {
+        text: "下列哪一個分類與借貸方向配對正確？",
+        choices: ["資產增加記貸方", "負債增加記借方", "收益增加記貸方", "費損增加記貸方"],
+        answer: 2,
+        explain: "收益增加記貸方；資產與費損增加記借方，負債增加記貸方。"
+      }
+    ];
+
+    const accountQuizQuestion = document.getElementById("accountQuizQuestion");
+    const accountChoiceList = document.getElementById("accountChoiceList");
+    const accountQuizFeedback = document.getElementById("accountQuizFeedback");
+    const accountScoreEl = document.getElementById("accountScore");
+    const accountAnsweredEl = document.getElementById("accountAnswered");
+    const nextAccountQuestion = document.getElementById("nextAccountQuestion");
+    const resetAccountQuiz = document.getElementById("resetAccountQuiz");
+    let currentAccountQuestion = 0;
+    let accountScore = 0;
+    let accountAnswered = 0;
+    let accountLocked = false;
+
+    function renderAccountQuiz() {
+      accountLocked = false;
+      const item = accountQuestions[currentAccountQuestion];
+      accountQuizQuestion.textContent = item.text;
+      accountChoiceList.innerHTML = "";
+      accountQuizFeedback.textContent = "選擇一個答案後，這裡會顯示解析。";
+
+      item.choices.forEach((choice, index) => {
+        const button = document.createElement("button");
+        button.className = "choice";
+        button.type = "button";
+        button.textContent = choice;
+        button.addEventListener("click", () => answerAccountQuestion(index, button));
+        accountChoiceList.appendChild(button);
+      });
+    }
+
+    function answerAccountQuestion(index, button) {
+      if (accountLocked) return;
+      accountLocked = true;
+      const item = accountQuestions[currentAccountQuestion];
+      const choices = accountChoiceList.querySelectorAll(".choice");
+      choices[item.answer].classList.add("correct");
+
+      if (index === item.answer) {
+        accountScore += 1;
+        accountQuizFeedback.innerHTML = `<strong style="color:#0f766e;">答對。</strong> ${item.explain}`;
+      } else {
+        button.classList.add("wrong");
+        accountQuizFeedback.innerHTML = `<strong style="color:#be123c;">再想一下。</strong> ${item.explain}`;
+      }
+
+      accountAnswered += 1;
+      accountScoreEl.textContent = accountScore;
+      accountAnsweredEl.textContent = accountAnswered;
+    }
+
+    nextAccountQuestion.addEventListener("click", () => {
+      currentAccountQuestion = (currentAccountQuestion + 1) % accountQuestions.length;
+      renderAccountQuiz();
+    });
+
+    resetAccountQuiz.addEventListener("click", () => {
+      currentAccountQuestion = 0;
+      accountScore = 0;
+      accountAnswered = 0;
+      accountScoreEl.textContent = accountScore;
+      accountAnsweredEl.textContent = accountAnswered;
+      renderAccountQuiz();
+    });
+
+    renderAccountQuiz();
+
+    const accountCards = [
+      {
+        category: "資產",
+        title: "現金",
+        front: "企業持有、可立即支付的貨幣資源。",
+        back: "資產科目。增加記借方，減少記貸方；正常餘額在借方。"
+      },
+      {
+        category: "資產",
+        title: "銀行存款",
+        front: "存放於銀行，可供企業支用的款項。",
+        back: "資產科目。常見於收款、付款、開立支票等交易。"
+      },
+      {
+        category: "資產",
+        title: "應收帳款",
+        front: "賒銷商品或服務後，尚未向客戶收回的款項。",
+        back: "資產科目。客戶欠企業的金額增加時記借方。"
+      },
+      {
+        category: "資產",
+        title: "存貨",
+        front: "企業為出售而持有的商品或產品。",
+        back: "資產科目。買賣業會計會搭配進貨、銷貨成本一起學。"
+      },
+      {
+        category: "資產",
+        title: "預付費用",
+        front: "已付款但尚未耗用的費用。",
+        back: "先列資產；日後實際耗用時，再轉列費用。"
+      },
+      {
+        category: "資產",
+        title: "設備",
+        front: "企業營業使用、可帶來長期效益的有形資產。",
+        back: "資產科目。通常會透過折舊把成本分攤到各期。"
+      },
+      {
+        category: "負債",
+        title: "應付帳款",
+        front: "賒購商品或服務後，尚未支付給供應商的款項。",
+        back: "負債科目。增加記貸方，減少記借方；正常餘額在貸方。"
+      },
+      {
+        category: "負債",
+        title: "應付票據",
+        front: "企業簽發票據，承諾未來付款的義務。",
+        back: "負債科目。代表未來需要清償的金額。"
+      },
+      {
+        category: "負債",
+        title: "預收收入",
+        front: "已收款但尚未提供商品或服務。",
+        back: "先列負債；等服務完成或商品交付後，再轉列收入。"
+      },
+      {
+        category: "負債",
+        title: "短期借款",
+        front: "企業向銀行或他人借入，預計短期內償還的款項。",
+        back: "負債科目。借入時負債增加，通常記貸方。"
+      },
+      {
+        category: "權益",
+        title: "業主資本",
+        front: "業主投入企業的資源。",
+        back: "權益科目。增加記貸方，減少記借方；正常餘額在貸方。"
+      },
+      {
+        category: "權益",
+        title: "業主往來",
+        front: "業主與企業間暫時性往來款項。",
+        back: "可用來記錄業主代收、代付、暫借或墊付款等事項。"
+      },
+      {
+        category: "權益",
+        title: "本期損益",
+        front: "收入減費用後的經營成果。",
+        back: "淨利會增加權益；淨損會減少權益。"
+      },
+      {
+        category: "收益",
+        title: "銷貨收入",
+        front: "出售商品所賺得的收入。",
+        back: "收益科目。增加記貸方，通常會讓業主權益增加。"
+      },
+      {
+        category: "收益",
+        title: "服務收入",
+        front: "提供服務後賺得的收入。",
+        back: "重點在服務是否已完成，完成後才符合收入認列。"
+      },
+      {
+        category: "收益",
+        title: "利息收入",
+        front: "存款、放款或投資所產生的利息。",
+        back: "收益科目。增加記貸方；通常屬於非主要營業收入。"
+      },
+      {
+        category: "費損",
+        title: "薪資費用",
+        front: "支付員工勞務報酬所發生的成本。",
+        back: "費損科目。增加記借方，會降低本期損益與權益。"
+      },
+      {
+        category: "費損",
+        title: "租金費用",
+        front: "使用辦公室、店面或設備而發生的租金。",
+        back: "費損科目。若先付未耗用，可能先列預付費用。"
+      },
+      {
+        category: "費損",
+        title: "折舊費用",
+        front: "把長期資產成本按使用期間分攤。",
+        back: "費損科目。常搭配設備、累計折舊等概念學習。"
+      },
+      {
+        category: "費損",
+        title: "銷貨成本",
+        front: "已出售商品的成本。",
+        back: "買賣業重要費損科目，用來計算銷貨毛利。"
+      }
+    ];
+
+    const flashcardFilters = document.getElementById("flashcardFilters");
+    const flashcardGrid = document.getElementById("flashcardGrid");
+    const cardCategories = ["全部", "資產", "負債", "權益", "收益", "費損"];
+    let currentCardCategory = "全部";
+
+    function renderFlashcardFilters() {
+      cardCategories.forEach((category) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = category;
+        button.className = category === currentCardCategory ? "active" : "";
+        button.addEventListener("click", () => {
+          currentCardCategory = category;
+          renderFlashcards();
+        });
+        flashcardFilters.appendChild(button);
+      });
+    }
+
+    function renderFlashcards() {
+      flashcardGrid.innerHTML = "";
+      flashcardFilters.innerHTML = "";
+      const cards = currentCardCategory === "全部"
+        ? accountCards
+        : accountCards.filter((card) => card.category === currentCardCategory);
+
+      renderFlashcardFilters();
+
+      cards.forEach((card) => {
+        const article = document.createElement("article");
+        article.className = "flashcard";
+        article.tabIndex = 0;
+        article.innerHTML = `
+          <div class="flashcard-inner">
+            <div class="flashcard-face">
+              <span class="tag">${card.category}</span>
+              <div class="flashcard-title">${card.title}</div>
+              <div class="flashcard-meta">${card.front}</div>
+            </div>
+            <div class="flashcard-face flashcard-back">
+              <span class="tag blue">翻面</span>
+              <div class="flashcard-title">${card.title}</div>
+              <div class="flashcard-meta">${card.back}</div>
+            </div>
+          </div>
+        `;
+        article.addEventListener("click", () => article.classList.toggle("flipped"));
+        article.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            article.classList.toggle("flipped");
+          }
+        });
+        flashcardGrid.appendChild(article);
+      });
+    }
+
+    renderFlashcards();
+
+    const terms = [
+      {
+        title: "資產",
+        body: "企業所控制、來自過去交易，且預期未來能帶來經濟效益的資源。資產增加通常記在借方。"
+      },
+      {
+        title: "負債",
+        body: "企業因過去交易產生的現有義務，未來清償時會使經濟效益流出。負債增加通常記在貸方。"
+      },
+      {
+        title: "業主權益",
+        body: "資產扣除負債後的剩餘權益，會受業主投入、提取與本期損益影響。"
+      },
+      {
+        title: "預收收入",
+        body: "企業先收到款項，但尚未提供商品或服務，因此通常先視為負債，而不是已賺得的收益。"
+      },
+      {
+        title: "預付費用",
+        body: "企業先付錢但尚未耗用的項目，通常先列為資產，等實際耗用後再轉為費用。"
+      },
+      {
+        title: "正常餘額",
+        body: "某科目增加時所記入的一方，就是該科目的正常餘額方向。例如資產正常借餘，負債正常貸餘。"
+      }
+    ];
+
+    const termButtons = document.getElementById("termButtons");
+    const termTitle = document.getElementById("termTitle");
+    const termBody = document.getElementById("termBody");
+
+    function showTerm(index) {
+      document.querySelectorAll(".term-buttons button").forEach((button) => button.classList.remove("active"));
+      document.querySelectorAll(".term-buttons button")[index].classList.add("active");
+      termTitle.textContent = terms[index].title;
+      termBody.textContent = terms[index].body;
+    }
+
+    terms.forEach((term, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = term.title;
+      button.addEventListener("click", () => showTerm(index));
+      termButtons.appendChild(button);
+    });
+
+    showTerm(0);
+  </script>
+</body>
+</html>
