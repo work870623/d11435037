@@ -315,6 +315,25 @@
       border: 0;
     }
 
+    .video-meta {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .video-meta strong {
+      color: var(--ink);
+      font-size: 0.95rem;
+    }
+
+    .video-meta a {
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
     .chapter-focus {
       display: flex;
       flex-wrap: wrap;
@@ -840,10 +859,10 @@
               <li>借貸方向</li>
             </ul>
           </div>
-          <div class="chapter-media">
+          <div class="chapter-media" data-video-unit="1">
             <div class="chapter-video">
               <iframe
-                src="https://www.youtube.com/embed/0NkMCvR0XsI"
+                src="https://www.youtube.com/embed/0NkMCvR0XsI?rel=0&modestbranding=1&playsinline=1"
                 title="第一章 會計基本概念"
                 loading="lazy"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -851,10 +870,14 @@
                 allowfullscreen>
               </iframe>
             </div>
+            <div class="video-meta" aria-live="polite">
+              <strong>第一章 會計基本概念</strong>
+              <span>正在連線取得最新影片資訊...</span>
+            </div>
             <a class="button secondary" href="#chapter1">閱讀詳解</a>
           </div>
         </article>
-        <article class="chapter-panel">
+        <article class="chapter-panel has-media">
           <div class="chapter-number">02</div>
           <div class="chapter-content">
             <span class="tag">單元二</span>
@@ -867,9 +890,25 @@
               <li>損益表</li>
             </ul>
           </div>
-          <a class="button secondary" href="#chapter2">閱讀詳解</a>
+          <div class="chapter-media" data-video-unit="2">
+            <div class="chapter-video">
+              <iframe
+                src="https://www.youtube.com/embed?listType=playlist&list=PLBcMyiCni2F9gLqAI8iImMQyt4LTm5fNY&rel=0&modestbranding=1&playsinline=1"
+                title="第二章 會計理論與主要財務報表"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="video-meta" aria-live="polite">
+              <strong>第二章 會計理論與主要財務報表</strong>
+              <span>正在連線取得最新影片資訊...</span>
+            </div>
+            <a class="button secondary" href="#chapter2">閱讀詳解</a>
+          </div>
         </article>
-        <article class="chapter-panel">
+        <article class="chapter-panel has-media">
           <div class="chapter-number">03</div>
           <div class="chapter-content">
             <span class="tag amber">單元三</span>
@@ -882,9 +921,25 @@
               <li>過帳</li>
             </ul>
           </div>
-          <a class="button secondary" href="#chapter3">閱讀詳解</a>
+          <div class="chapter-media" data-video-unit="3">
+            <div class="chapter-video">
+              <iframe
+                src="https://www.youtube.com/embed?listType=playlist&list=PLBcMyiCni2F9gLqAI8iImMQyt4LTm5fNY&rel=0&modestbranding=1&playsinline=1"
+                title="第三章 會計處理六大程序（上）"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="video-meta" aria-live="polite">
+              <strong>第三章 會計處理六大程序（上）</strong>
+              <span>正在連線取得最新影片資訊...</span>
+            </div>
+            <a class="button secondary" href="#chapter3">閱讀詳解</a>
+          </div>
         </article>
-        <article class="chapter-panel">
+        <article class="chapter-panel has-media">
           <div class="chapter-number">04</div>
           <div class="chapter-content">
             <span class="tag rose">單元四</span>
@@ -897,7 +952,23 @@
               <li>編製報表</li>
             </ul>
           </div>
-          <a class="button secondary" href="#chapter4">閱讀詳解</a>
+          <div class="chapter-media" data-video-unit="4">
+            <div class="chapter-video">
+              <iframe
+                src="https://www.youtube.com/embed?listType=playlist&list=PLBcMyiCni2F9gLqAI8iImMQyt4LTm5fNY&rel=0&modestbranding=1&playsinline=1"
+                title="第四章 會計處理六大程序（下）"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="video-meta" aria-live="polite">
+              <strong>第四章 會計處理六大程序（下）</strong>
+              <span>正在連線取得最新影片資訊...</span>
+            </div>
+            <a class="button secondary" href="#chapter4">閱讀詳解</a>
+          </div>
         </article>
       </div>
     </section>
@@ -2460,6 +2531,44 @@
     });
 
     showTerm(0);
+
+    async function refreshLessonVideos() {
+      const panels = document.querySelectorAll("[data-video-unit]");
+      if (!panels.length) return;
+
+      try {
+        const response = await fetch("/api/videos", { headers: { "Accept": "application/json" } });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const payload = await response.json();
+        const videos = payload.videos || [];
+
+        videos.forEach((video) => {
+          const panel = document.querySelector(`[data-video-unit="${video.unit}"]`);
+          if (!panel) return;
+
+          const iframe = panel.querySelector("iframe");
+          const meta = panel.querySelector(".video-meta");
+          if (iframe && video.embed_url && video.embed_url.startsWith("https://www.youtube.com/embed")) {
+            iframe.src = video.embed_url;
+            iframe.title = video.title || iframe.title;
+          }
+          if (meta) {
+            meta.innerHTML = `
+              <strong>${video.title || "課程影片"}</strong>
+              <span>${video.source_label || "課程來源"} · ${video.status || "已載入"}</span>
+              <a href="${video.watch_url}" target="_blank" rel="noopener">在原網站開啟</a>
+            `;
+          }
+        });
+      } catch (error) {
+        panels.forEach((panel) => {
+          const meta = panel.querySelector(".video-meta span");
+          if (meta) meta.textContent = "暫時無法連線後端，已保留預設課程影片。";
+        });
+      }
+    }
+
+    refreshLessonVideos();
   </script>
 </body>
 </html>
