@@ -17,6 +17,7 @@ app = Flask(__name__, template_folder=".")
 HTTP_TIMEOUT = 5
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) learning-video-fetcher/1.0"
 PLAYLIST_ID = "PLBcMyiCni2F9gLqAI8iImMQyt4LTm5fNY"
+DEFAULT_VIDEO_ID = "0NkMCvR0XsI"
 
 
 @dataclass(frozen=True)
@@ -38,16 +39,19 @@ LESSON_VIDEOS = [
         unit=2,
         title="第二章 會計理論與主要財務報表",
         query="會計學入門 第二章 會計理論 主要財務報表",
+        youtube_url="https://www.youtube.com/watch?v=-ybGvN3AP4Y&list=PLBcMyiCni2F9gLqAI8iImMQyt4LTm5fNY&index=5",
     ),
     LessonVideo(
         unit=3,
         title="第三章 會計處理六大程序 上",
         query="會計學入門 第三章 會計處理程序 分錄 日記帳 過帳",
+        youtube_url="https://www.youtube.com/watch?v=6MgGMQ-YclQ&list=PLBcMyiCni2F9gLqAI8iImMQyt4LTm5fNY&index=2",
     ),
     LessonVideo(
         unit=4,
         title="第四章 會計處理六大程序 下",
         query="會計學入門 第四章 試算 調整 結帳 編表",
+        youtube_url="https://www.youtube.com/watch?v=n0pGO0TCKaU&list=PLBcMyiCni2F9gLqAI8iImMQyt4LTm5fNY&index=19",
     ),
 ]
 
@@ -74,10 +78,12 @@ def video_id_from_url(url: str) -> str | None:
 
 
 def youtube_embed_url(video_id: str | None) -> str:
-    player_params = "rel=0&modestbranding=1&playsinline=1"
-    if video_id:
-        return f"https://www.youtube.com/embed/{video_id}?{player_params}"
-    return f"https://www.youtube.com/embed?listType=playlist&list={PLAYLIST_ID}&{player_params}"
+    safe_video_id = video_id or DEFAULT_VIDEO_ID
+    player_params = urlencode({
+        "rel": "0",
+        "playsinline": "1",
+    })
+    return f"https://www.youtube.com/embed/{safe_video_id}?{player_params}"
 
 
 def youtube_watch_url(video_id: str | None) -> str:
